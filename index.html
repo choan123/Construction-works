@@ -1,148 +1,34 @@
 <!DOCTYPE html>
-<html lang="he">
+<html lang="he" dir="rtl">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>אפליקציית ניהול בנייה</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>כניסה למערכת</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
 </head>
 
-<body dir="rtl">
-    <header>
-        <h1>ניהול בנייה</h1>
-        <nav>
-            <button onclick="showSection('login')">התחברות</button>
-            <button onclick="showSection('projects')">פרויקטים</button>
-            <button onclick="showSection('tasks')">משימות</button>
-            <button onclick="showSection('calendar')">לוח שנה</button>
-            <button onclick="showSection('people')">אנשי מקצוע</button>
-            <button onclick="showSection('budget')">תקציב</button>
-            <button onclick="showSection('gallery')">תמונות</button>
-            <button onclick="showSection('reports')">דו\"חות</button>
-            <button onclick="showSection('notifications')">התראות</button>
-        </nav>
-    </header>
+<body>
 
-    <!-- Login Section -->
-    <section id="login" class="active">
-        <h2>התחברות</h2>
-        <form id="loginForm" onsubmit="loginUser(event)">
-            <label>שם משתמש: <input type="text" id="username" required></label>
-            <label>סיסמה: <input type="password" id="password" required></label>
-            <button type="submit">התחבר</button>
+    <section class="active" id="loginSection">
+        <h2>🔐 כניסה למערכת</h2>
+        <form id="pinForm">
+            <label>הכנס קוד PIN:</label>
+            <input type="password" id="pinInput" placeholder="4 ספרות" maxlength="4" required>
+            <button type="submit">היכנס</button>
+            <p id="errorMsg" style="color: red; display: none;">קוד שגוי</p>
         </form>
-        <div id="loginMsg"></div>
+
+        <button onclick="resetPIN()">🔁 שכחתי/רוצה לשנות קוד</button><br>
+        <button onclick="registerFingerprint()">🔒 הוסף טביעת אצבע</button>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects">
-        <h2>פרויקטים</h2>
-        <form id="projectForm" onsubmit="addProject(event)">
-            <input type="text" id="projName" placeholder="שם פרויקט" required>
-            <input type="text" id="projLocation" placeholder="מיקום" required>
-            <input type="date" id="projStart" required>
-            <input type="date" id="projEnd" required>
-            <select id="projStatus">
-                <option value="בתכנון">בתכנון</option>
-                <option value="בתהליך">בתהליך</option>
-                <option value="הסתיים">הסתיים</option>
-            </select>
-            <input type="file" id="projFiles" multiple>
-            <button type="submit">הוסף פרויקט</button>
-        </form>
-        <ul id="projectsList"></ul>
+    <section id="mainApp" style="display: none;">
+        <h2>👋 ברוך הבא!</h2>
+        <p>עברת את הכניסה בהצלחה.</p>
     </section>
 
-    <!-- Tasks Section -->
-    <section id="tasks">
-        <h2>משימות</h2>
-        <form id="taskForm" onsubmit="addTask(event)">
-            <input type="text" id="taskName" placeholder="שם משימה" required>
-            <select id="taskStage">
-                <option>יסודות</option>
-                <option>שלד</option>
-                <option>אינסטלציה</option>
-                <option>גמרים</option>
-                <option>חשמל</option>
-            </select>
-            <input type="date" id="taskDue" required>
-            <input type="text" id="taskWorker" placeholder="שם עובד/קבלן">
-            <select id="taskStatus">
-                <option>לא התחיל</option>
-                <option>בעבודה</option>
-                <option>הושלם</option>
-            </select>
-            <input type="file" id="taskImages" multiple>
-            <textarea id="taskNotes" placeholder="הערות"></textarea>
-            <button type="submit">הוסף משימה</button>
-        </form>
-        <ul id="tasksList"></ul>
-    </section>
-
-    <!-- Calendar/Gantt Section -->
-    <section id="calendar">
-        <h2>לוח שנה / גאנט</h2>
-        <div id="calendarView"></div>
-        <button onclick="alert('פיצ\'ר גרירה יתממשק בהמשך')">גרור משימות (להדגמה)</button>
-    </section>
-
-    <!-- People Section -->
-    <section id="people">
-        <h2>אנשי מקצוע / ספקים</h2>
-        <form id="personForm" onsubmit="addPerson(event)">
-            <input type="text" id="personName" placeholder="שם" required>
-            <input type="text" id="personRole" placeholder="תפקיד">
-            <input type="tel" id="personPhone" placeholder="טלפון">
-            <textarea id="personNotes" placeholder="הערות"></textarea>
-            <button type="submit">הוסף איש מקצוע</button>
-        </form>
-        <ul id="peopleList"></ul>
-    </section>
-
-    <!-- Budget Section -->
-    <section id="budget">
-        <h2>תקציב והוצאות</h2>
-        <form id="budgetForm" onsubmit="setBudget(event)">
-            <input type="number" id="budgetAmount" placeholder="תקציב לפרויקט (₪)" required>
-            <button type="submit">עדכן תקציב</button>
-        </form>
-        <form id="expenseForm" onsubmit="addExpense(event)">
-            <input type="number" id="expenseAmount" placeholder="סכום הוצאה" required>
-            <input type="text" id="expenseCat" placeholder="קטגוריה (חומרים/עבודה)">
-            <button type="submit">הוסף הוצאה</button>
-        </form>
-        <div id="budgetStatus"></div>
-        <canvas id="budgetChart" width="300" height="150"></canvas>
-    </section>
-
-    <!-- Gallery Section -->
-    <section id="gallery">
-        <h2>תיעוד ותמונות</h2>
-        <input type="file" id="galleryInput" multiple accept="image/*" onchange="addGalleryImages(event)">
-        <div id="galleryImages"></div>
-    </section>
-
-    <!-- Reports Section -->
-    <section id="reports">
-        <h2>דו"חות</h2>
-        <button onclick="generateReport()">הפק דו"ח סטטוס PDF</button>
-        <div id="reportOutput"></div>
-    </section>
-
-    <!-- Notifications Section -->
-    <section id="notifications">
-        <h2>התראות</h2>
-        <ul id="notificationsList"></ul>
-    </section>
-
-    <footer>
-        <div>© 2025 אפליקציית ניהול בנייה</div>
-        <div>ממשק דמו בסיסי - להמחשה בלבד</div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="app.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>
