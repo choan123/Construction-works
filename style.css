@@ -1,159 +1,134 @@
+/* עיצוב כללי */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: "Segoe UI", "Arial", sans-serif;
+    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+    min-height: 100vh;
     margin: 0;
-    background: #f6f7fb;
-    color: #222;
-}
-
-header {
-    background: #20639b;
-    color: #fff;
-    padding: 1em 0.5em;
-    text-align: center;
-}
-
-header h1 {
-    margin: 0 0 0.5em 0;
-    font-size: 2em;
-    letter-spacing: 1px;
-}
-
-nav {
-    margin-bottom: 0.5em;
-}
-
-nav button {
-    font-size: 1em;
-    margin: 0 0.3em;
-    background: #3caea3;
-    border: none;
-    color: #fff;
-    padding: 0.6em 1.2em;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-nav button:hover {
-    background: #20639b;
-}
-
-section {
-    display: none;
-    max-width: 600px;
-    margin: 2em auto;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px #0001;
-    padding: 2em 1.5em;
-    min-height: 320px;
-}
-
-section.active {
-    display: block;
-}
-
-form {
-    margin-bottom: 1.5em;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.7em;
-}
-
-form input,
-form select,
-form textarea,
-form button {
-    margin: 0.2em 0;
-    font-size: 1em;
-    padding: 0.4em;
-    border-radius: 4px;
-    border: 1px solid #ccd;
-}
-
-form button {
-    background: #3caea3;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-form button:hover {
-    background: #173f5f;
-}
-
-ul {
-    list-style: none;
     padding: 0;
-    margin: 0;
-}
-
-ul li {
-    background: #f1f1f1;
-    border-radius: 4px;
-    margin: 0.4em 0;
-    padding: 0.7em;
-    box-shadow: 0 1px 3px #0001;
-}
-
-#calendarView {
-    min-height: 120px;
-    background: #eef;
-    border-radius: 7px;
-    padding: 1em;
-    margin-bottom: 1em;
-}
-
-#galleryImages {
+    direction: rtl;
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.6em;
+    justify-content: center;
+    align-items: center;
 }
 
-#galleryImages img {
-    width: 90px;
-    height: 70px;
-    object-fit: cover;
-    border: 2px solid #3caea3;
-    border-radius: 6px;
-    box-shadow: 0 1px 4px #10639b22;
-}
-
-#budgetStatus {
-    margin: 1em 0;
-    background: #f6f7fb;
-    padding: 0.6em 1em;
-    border-radius: 5px;
-    border: 1px solid #ccd;
-}
-
-footer {
-    background: #173f5f;
-    color: #fff;
+/* עיצוב לאיזור הכניסה */
+section#loginSection,
+section#mainApp {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.10);
+    padding: 2.5rem 2rem 2rem 2rem;
+    min-width: 320px;
+    max-width: 90vw;
     text-align: center;
-    padding: 1em 0.7em;
-    margin-top: 2em;
-    font-size: 1em;
+    transition: box-shadow 0.2s;
 }
 
-@media (max-width: 700px) {
+section#loginSection h2,
+section#mainApp h2 {
+    margin-bottom: 1.5rem;
+    color: #2a3c60;
+    font-size: 1.7rem;
+}
 
-    section,
-    header,
-    footer {
-        padding: 1em 0.5em;
-        font-size: 0.98em;
+form#pinForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.3rem;
+}
+
+form#pinForm label {
+    font-size: 1.1rem;
+    color: #3a3a3a;
+}
+
+input#pinInput {
+    font-size: 1.2rem;
+    padding: 0.7rem 1rem;
+    border: 1px solid #b6c7d6;
+    border-radius: 10px;
+    text-align: center;
+    transition: border-color 0.2s;
+    outline: none;
+    background: #f4f7fb;
+    letter-spacing: 0.3em;
+    direction: ltr;
+}
+
+input#pinInput:focus {
+    border-color: #6c9bfa;
+    background: #e9f1ff;
+}
+
+button[type="submit"] {
+    background: linear-gradient(90deg, #6c9bfa 0%, #3578e5 100%);
+    color: #fff;
+    font-size: 1.1rem;
+    padding: 0.7rem 0;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    margin-top: 0.3rem;
+    box-shadow: 0 2px 8px rgba(54, 120, 229, 0.08);
+}
+
+button[type="submit"]:hover {
+    background: linear-gradient(90deg, #3578e5 0%, #6c9bfa 100%);
+    transform: translateY(-2px) scale(1.03);
+}
+
+/* כפתורי עזר */
+section#loginSection>button {
+    margin-top: 0.6rem;
+    padding: 0.52rem 0.6rem;
+    background: #f2f5fa;
+    color: #2a3c60;
+    border: 1px solid #d3dbe6;
+    border-radius: 9px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+    margin-bottom: 0.15rem;
+}
+
+section#loginSection>button:hover {
+    background: #e9f1ff;
+    color: #3578e5;
+}
+
+#errorMsg {
+    margin-top: -0.4rem;
+    font-size: 1rem;
+    color: #e03939;
+    display: none;
+}
+
+/* מסך ברוך הבא */
+section#mainApp h2 {
+    margin-top: 1rem;
+    color: #1b6e4f;
+}
+
+section#mainApp p {
+    font-size: 1.15rem;
+    color: #2a3c60;
+    margin-top: 1.4rem;
+}
+
+/* רספונסיביות */
+@media (max-width: 500px) {
+
+    section#loginSection,
+    section#mainApp {
+        padding: 1.2rem 0.5rem;
+        min-width: 0;
+        font-size: 0.99rem;
     }
 
-    nav button {
-        margin: 0.2em 0.1em;
-        font-size: 0.92em;
-        padding: 0.4em 0.6em;
-    }
-
-    #galleryImages img {
-        width: 70px;
-        height: 55px;
+    form#pinForm label,
+    section#mainApp p {
+        font-size: 1rem;
     }
 }
