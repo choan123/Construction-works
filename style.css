@@ -1,0 +1,159 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    background: #f6f7fb;
+    color: #222;
+}
+
+header {
+    background: #20639b;
+    color: #fff;
+    padding: 1em 0.5em;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0 0 0.5em 0;
+    font-size: 2em;
+    letter-spacing: 1px;
+}
+
+nav {
+    margin-bottom: 0.5em;
+}
+
+nav button {
+    font-size: 1em;
+    margin: 0 0.3em;
+    background: #3caea3;
+    border: none;
+    color: #fff;
+    padding: 0.6em 1.2em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+nav button:hover {
+    background: #20639b;
+}
+
+section {
+    display: none;
+    max-width: 600px;
+    margin: 2em auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px #0001;
+    padding: 2em 1.5em;
+    min-height: 320px;
+}
+
+section.active {
+    display: block;
+}
+
+form {
+    margin-bottom: 1.5em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7em;
+}
+
+form input,
+form select,
+form textarea,
+form button {
+    margin: 0.2em 0;
+    font-size: 1em;
+    padding: 0.4em;
+    border-radius: 4px;
+    border: 1px solid #ccd;
+}
+
+form button {
+    background: #3caea3;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+form button:hover {
+    background: #173f5f;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul li {
+    background: #f1f1f1;
+    border-radius: 4px;
+    margin: 0.4em 0;
+    padding: 0.7em;
+    box-shadow: 0 1px 3px #0001;
+}
+
+#calendarView {
+    min-height: 120px;
+    background: #eef;
+    border-radius: 7px;
+    padding: 1em;
+    margin-bottom: 1em;
+}
+
+#galleryImages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6em;
+}
+
+#galleryImages img {
+    width: 90px;
+    height: 70px;
+    object-fit: cover;
+    border: 2px solid #3caea3;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px #10639b22;
+}
+
+#budgetStatus {
+    margin: 1em 0;
+    background: #f6f7fb;
+    padding: 0.6em 1em;
+    border-radius: 5px;
+    border: 1px solid #ccd;
+}
+
+footer {
+    background: #173f5f;
+    color: #fff;
+    text-align: center;
+    padding: 1em 0.7em;
+    margin-top: 2em;
+    font-size: 1em;
+}
+
+@media (max-width: 700px) {
+
+    section,
+    header,
+    footer {
+        padding: 1em 0.5em;
+        font-size: 0.98em;
+    }
+
+    nav button {
+        margin: 0.2em 0.1em;
+        font-size: 0.92em;
+        padding: 0.4em 0.6em;
+    }
+
+    #galleryImages img {
+        width: 70px;
+        height: 55px;
+    }
+}
