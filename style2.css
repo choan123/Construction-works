@@ -1,0 +1,124 @@
+body {
+    font-family: "Segoe UI", "Arial", sans-serif;
+    background: linear-gradient(135deg, #f7ffe5 0%, #e5f9ff 100%);
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    direction: rtl;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section#loginSection {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.10);
+    padding: 2.5rem 2rem 2rem 2rem;
+    min-width: 330px;
+    max-width: 94vw;
+    text-align: center;
+}
+
+section#loginSection h2 {
+    margin-bottom: 2rem;
+    color: #2a3c60;
+    font-size: 1.6rem;
+    letter-spacing: 0.01em;
+}
+
+form#codeForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-bottom: 1.2rem;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper input[type="password"],
+.input-wrapper input[type="text"] {
+    font-size: 1.12rem;
+    padding: 0.7rem 2.7rem 0.7rem 1rem;
+    /* right for placeholder, left for icon */
+    border: 1px solid #b6c7d6;
+    border-radius: 10px;
+    background: #f9fbff;
+    direction: ltr;
+    text-align: right;
+    width: 100%;
+    transition: border-color 0.2s;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.input-wrapper input:focus {
+    border-color: #6c9bfa;
+    background: #e9f1ff;
+}
+
+.input-wrapper .toggle-visibility {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #6c9bfa;
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    padding: 0;
+    outline: none;
+    z-index: 2;
+    transition: color 0.2s;
+    line-height: 1;
+}
+
+.input-wrapper .toggle-visibility:hover {
+    color: #3578e5;
+}
+
+::placeholder {
+    color: #8f98a8;
+    text-align: right;
+    font-size: 1.03em;
+    letter-spacing: 0.01em;
+}
+
+button[type="submit"] {
+    background: linear-gradient(90deg, #6c9bfa 0%, #3578e5 100%);
+    color: #fff;
+    font-size: 1.13rem;
+    padding: 0.75rem 0;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    margin-top: 0.2rem;
+    box-shadow: 0 2px 8px rgba(54, 120, 229, 0.08);
+}
+
+button[type="submit"]:hover {
+    background: linear-gradient(90deg, #3578e5 0%, #6c9bfa 100%);
+    transform: translateY(-2px) scale(1.03);
+}
+
+#errorMsg {
+    margin-top: 0.8rem;
+    font-size: 1.07rem;
+    color: #e03939;
+    display: none;
+}
+
+/* רספונסיביות */
+@media (max-width: 500px) {
+    section#loginSection {
+        padding: 1.2rem 0.5rem;
+        min-width: 0;
+        font-size: 0.98rem;
+    }
+}

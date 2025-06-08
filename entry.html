@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="he">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מסך ראשי</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="loginSection">
+        <form id="pinForm">
+            <input type="password" id="pinInput" placeholder="הזן קוד PIN" style="display: none;" />
+            <button type="button" id="setupCodesBtn">בחר קודים חדשים</button>
+        </form>
+    </div>
+
+    <script>
+        // אם כבר הוגדר PIN - מציג את תיבת הקוד
+        if (localStorage.getItem("userPIN")) {
+            document.getElementById("pinInput").style.display = "block";
+            document.getElementById("setupCodesBtn").textContent = "הכנס";
+            document.getElementById("setupCodesBtn").type = "submit";
+        } else {
+            document.getElementById("setupCodesBtn").addEventListener("click", () => {
+                window.location.href = "codes.html";
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="he">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הגדרת קודים</title>
+    <link rel="stylesheet" href="style2.css">
+</head>
+
+<body>
+    <section id="loginSection">
+        <h2>הגדרת קודים חדשים</h2>
+        <form id="codeForm" autocomplete="off">
+            <div class="input-wrapper">
+                <input type="password" id="mainCode" placeholder="קוד לאתר" required>
+                <button type="button" class="toggle-visibility" tabindex="-1"
+                    onclick="toggleVisibility('mainCode', this)" aria-label="הצג/הסתר קוד">
+                    👁️
+                </button>
+            </div>
+            <div class="input-wrapper">
+                <input type="password" id="mainCodeConfirm" placeholder="אימות קוד לאתר" required>
+                <button type="button" class="toggle-visibility" tabindex="-1"
+                    onclick="toggleVisibility('mainCodeConfirm', this)" aria-label="הצג/הסתר קוד">
+                    👁️
+                </button>
+            </div>
+            <div class="input-wrapper">
+                <input type="password" id="childCode" placeholder="קוד להגנה מילדים" required>
+                <button type="button" class="toggle-visibility" tabindex="-1"
+                    onclick="toggleVisibility('childCode', this)" aria-label="הצג/הסתר קוד">
+                    👁️
+                </button>
+            </div>
+            <div class="input-wrapper">
+                <input type="password" id="childCodeConfirm" placeholder="אימות קוד ילדים" required>
+                <button type="button" class="toggle-visibility" tabindex="-1"
+                    onclick="toggleVisibility('childCodeConfirm', this)" aria-label="הצג/הסתר קוד">
+                    👁️
+                </button>
+            </div>
+            <button type="submit">שמור קודים</button>
+        </form>
+        <p id="errorMsg">⚠️ יש לוודא שכל הקודים תואמים</p>
+    </section>
+
+    <script>
+        function toggleVisibility(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                btn.textContent = "🙈";
+            } else {
+                input.type = "password";
+                btn.textContent = "👁️";
+            }
+        }
+
+        document.getElementById("codeForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const main = document.getElementById("mainCode").value;
+            const mainConfirm = document.getElementById("mainCodeConfirm").value;
+            const child = document.getElementById("childCode").value;
+            const childConfirm = document.getElementById("childCodeConfirm").value;
+
+            if (main !== mainConfirm || child !== childConfirm) {
+                document.getElementById("errorMsg").style.display = "block";
+                return;
+            }
+
+            localStorage.setItem("userPIN", main);
+            localStorage.setItem("childSafetyPassword", child);
+            localStorage.setItem("pinWasSet", "true");
+
+            alert("✅ הקודים נשמרו בהצלחה!");
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+
+</html>
