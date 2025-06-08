@@ -1,30 +1,67 @@
-// בעת טעינת הדף – בדיקה ראשונית
-window.addEventListener("DOMContentLoaded", () => {
-    // בדיקה האם יש סיסמת ילדים, אם לא – מבקש לקבוע אחת
-    if (!localStorage.getItem("childSafetyPassword")) {
-        const first = prompt("הגדר סיסמת בטיחות מילדים (לפחות 4 תווים):");
-        if (first && first.length >= 4) {
-            localStorage.setItem("childSafetyPassword", first);
-            alert("סיסמת ילדים נשמרה בהצלחה ✅");
-        }
+// התחברות ל-Supabase
+const supabaseUrl = "https://ptwlvrtzjwsvzrbuepvs.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB0d2x2cnR6andzdnpyYnVlcHZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkzMzAyMjIsImV4cCI6MjA2NDkwNjIyMn0.R7ITezkrnw5wD3ab_sQ6idXX1e7Cn-0_SFFAlVX2BC0";
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+// בדיקה אם יש נעילה גלובלית
+async function isGloballyLocked() {
+    const { data, error } = await supabase
+        .from("global_security_status")
+        .select("is_globally_locked")
+        .order("id", { ascending: false })
+        .limit(1);
+    if (error) {
+        console.error("שגיאה בבדיקה:", error);
+        return false;
+    }
+    return data.length > 0 && data[0].is_globally_locked;
+}
+
+// עדכון מספר ניסיונות גלובליים
+async function incrementGlobalAttempts() {
+    let { data, error } = await supabase
+        .from("global_security_status")
+        .select("*")
+        .order("id", { ascending: false })
+        .limit(1);
+
+    if (error || data.length === 0) {
+        await supabase.from("global_security_status").insert({ global_attempts: 1 });
+        return;
     }
 
-    // בדיקת טביעת אצבע
-    const enabled = localStorage.getItem("fingerprintEnabled");
-    if (enabled === "true") {
-        const useFingerprint = confirm("האם תרצה להתחבר עם טביעת אצבע?");
-        if (useFingerprint) {
-            tryFingerprintLogin();
-        }
-    }
-});
+    const current = data[0];
+    const attempts = current.global_attempts + 1;
+    const isLocked = attempts >= 20;
 
-// 🧠 קבועים
-const MAX_LOCAL_ATTEMPTS = 5;
+    await supabase
+        .from("global_security_status")
+        .update({
+            global_attempts: attempts,
+            is_globally_locked: isLocked
+        })
+        .eq("id", current.id);
+}
 
 // טופס כניסה עם PIN
-document.getElementById("pinForm").addEventListener("submit", function (e) {
+const MAX_LOCAL_ATTEMPTS = 5;
+document.getElementById("pinForm").addEventListener("submit", async function (e) {
     e.preventDefault();
+
+    const globallyLocked = await isGloballyLocked();
+    if (globallyLocked) {
+        const master = prompt("🔒 המערכת נעולה. הזן קוד מפתח לשחרור:");
+        if (master === "alio123alio123A1") {
+            await supabase.from("global_security_status").insert({
+                global_attempts: 0,
+                is_globally_locked: false
+            });
+            alert("✅ שחררת את הנעילה. נסה שוב.");
+        } else {
+            alert("❌ קוד מפתח שגוי.");
+        }
+        return;
+    }
 
     const userPIN = document.getElementById("pinInput").value;
     const savedPIN = localStorage.getItem("userPIN");
@@ -45,19 +82,18 @@ document.getElementById("pinForm").addEventListener("submit", function (e) {
     }
 
     if (!savedPIN) {
-        // קוד חדש
         localStorage.setItem("userPIN", userPIN);
         alert("הקוד נשמר. כעת תוכל להיכנס עם הקוד הזה.");
         showApp();
     } else if (userPIN === savedPIN) {
-        // כניסה תקינה
         showApp();
         localStorage.setItem("localFailedAttempts", "0");
     } else {
-        // ניסיון שגוי
         attempts++;
         localStorage.setItem("localFailedAttempts", attempts.toString());
         document.getElementById("errorMsg").style.display = "block";
+
+        await incrementGlobalAttempts();
 
         if (attempts >= MAX_LOCAL_ATTEMPTS) {
             localStorage.setItem("childLockEnabled", "true");
@@ -65,73 +101,3 @@ document.getElementById("pinForm").addEventListener("submit", function (e) {
         }
     }
 });
-
-// הצגת המסך הראשי אחרי כניסה
-function showApp() {
-    document.getElementById("loginSection").style.display = "none";
-    document.getElementById("mainApp").style.display = "block";
-}
-
-// איפוס PIN קיים
-function resetPIN() {
-    const savedPIN = localStorage.getItem("userPIN");
-    const answer = prompt("כדי לאפס את הקוד, הזן את הקוד הנוכחי:");
-
-    if (answer === savedPIN) {
-        const newPIN = prompt("הזן קוד PIN חדש (4 ספרות):");
-        if (newPIN && newPIN.length === 4) {
-            localStorage.setItem("userPIN", newPIN);
-            alert("הקוד עודכן בהצלחה ✅");
-        } else {
-            alert("קוד לא תקין");
-        }
-    } else {
-        alert("הקוד שהוזן שגוי ❌");
-    }
-}
-
-// רישום טביעת אצבע
-function registerFingerprint() {
-    if (!window.PublicKeyCredential) {
-        alert("המכשיר שלך לא תומך בזיהוי ביומטרי");
-        return;
-    }
-
-    navigator.credentials.get({
-        publicKey: {
-            challenge: new Uint8Array(32),
-            timeout: 60000,
-            allowCredentials: [],
-            userVerification: "preferred"
-        }
-    }).then((cred) => {
-        console.log("זיהוי ביומטרי הצליח ✅", cred);
-        localStorage.setItem("fingerprintEnabled", "true");
-        alert("טביעת האצבע הופעלה.");
-    }).catch((err) => {
-        console.warn("נכשל הזיהוי:", err);
-        alert("נכשל הזיהוי הביומטרי ❌");
-    });
-}
-
-// ניסיון טביעת אצבע
-function tryFingerprintLogin() {
-    if (!window.PublicKeyCredential) {
-        alert("המכשיר שלך לא תומך בזיהוי ביומטרי");
-        return;
-    }
-
-    navigator.credentials.get({
-        publicKey: {
-            challenge: new Uint8Array(32),
-            timeout: 60000,
-            allowCredentials: [],
-            userVerification: "required"
-        }
-    }).then((cred) => {
-        console.log("זיהוי ביומטרי הצליח ✅", cred);
-        showApp();
-    }).catch((err) => {
-        console.warn("נכשל הזיהוי:", err);
-    });
-}
